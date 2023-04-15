@@ -21,18 +21,18 @@ public class QuizzicalRestApiApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-//
-//		String[] incorrectAnswers = {"M`ngke","`gedei","Tem`r"} ;
-//		Question question = new Question(
-//				"History",
-//				"multiple",
-//				"medium",
-//				"What was Genghis Khan`s real name?",
-//				"Tem`jin",
-//				incorrectAnswers
-//				);
-//		System.out.println(question);
-//		repo.save(question);
+
+		String[] incorrectAnswers = {"M`ngke","`gedei","Tem`r"} ;
+		Question question = new Question(
+				"History",
+				"multiple",
+				"medium",
+				"What was Genghis Khan`s real name?",
+				"Tem`jin",
+				incorrectAnswers
+				);
+		System.out.println(question);
+		repo.save(question);
 	}
 
 }
