@@ -39,13 +39,13 @@ public class Question {
 	public Question() {
 	}
 
-	public Question(String category, String type, String difficulty, String question, String correctAnswer,
+	public Question(String category, String type, String difficulty, String question, String correct_answer,
 			String[] incorrect_answers) {
 		this.category = category;
 		this.type = type;
 		this.difficulty = difficulty;
 		this.question = question;
-		this.correct_answer = correctAnswer;
+		this.correct_answer = correct_answer;
 		this.incorrect_answers = incorrect_answers;
 	}
 
@@ -87,14 +87,6 @@ public class Question {
 
 	public void setQuestion(String question) {
 		this.question = question;
-	}
-
-	public String getCorrectAnswer() {
-		return correct_answer;
-	}
-
-	public void setCorrectAnswer(String correctAnswer) {
-		this.correct_answer = correctAnswer;
 	}
 
 	public String getCorrect_answer() {
