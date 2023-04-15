@@ -44,7 +44,7 @@ public class QuestionServiceImpl implements QuestionService{
 			}while(prevId == nextId);			
 			idsArray.add(nextId);									
 		}
-		System.out.println(idsArray);		
+//		System.out.println(idsArray);		
 		return questionRepo.findAllById(idsArray);
 	}
 

@@ -24,9 +24,9 @@ public class QuestionController {
 
 	@PostMapping("/questions")
 	public List<Question> addListOfQuestions(@RequestBody List<Question> questions) {
-		for (Question question : questions) {
-			System.out.println(question);			
-		}		
+//		for (Question question : questions) {
+//			System.out.println(question);			
+//		}		
 		return questionService.saveListOfQuestions(questions);
 	}
 	
