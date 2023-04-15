@@ -22,7 +22,7 @@ public class QuestionController {
 	@Autowired
 	private QuestionService questionService;
 
-	@PostMapping("/questions")
+	@PostMapping("/post")
 	public List<Question> addListOfQuestions(@RequestBody List<Question> questions) {
 //		for (Question question : questions) {
 //			System.out.println(question);			
