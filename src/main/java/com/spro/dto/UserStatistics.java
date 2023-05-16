@@ -1,5 +1,6 @@
 package com.spro.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,7 +9,7 @@ import com.spro.entity.Result;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
+
 @ToString
 
 public class UserStatistics {
@@ -49,7 +50,7 @@ public class UserStatistics {
 		
 		correctAnswersMedium =
 				userResults.stream()
-				.filter(res->res.getDifficulty().equalsIgnoreCase("medium"))
+				.filter(res->res.getDifficulty().equalsIgnoreCase("medium") ||res.getDifficulty().equalsIgnoreCase("any"))
 				.collect(Collectors.summingInt(Result::getNumberOfCorrectAnswers));
 //		System.out.println("correct answers medium = "+correctAnswersMedium);
 		
@@ -73,7 +74,7 @@ public class UserStatistics {
 		
 		totalQuestionsMedium =
 				userResults.stream()
-				.filter(res->res.getDifficulty().equalsIgnoreCase("medium"))
+				.filter(res->res.getDifficulty().equalsIgnoreCase("medium")||res.getDifficulty().equalsIgnoreCase("any") )
 				.collect(Collectors.summingInt(Result::getNumberOfQuestions));
 		if(totalQuestionsMedium == 0) totalQuestionsMedium = 1;
 //		System.out.println("total questions medium = "+totalQuestionsMedium);
@@ -83,13 +84,26 @@ public class UserStatistics {
 				.filter(res->res.getDifficulty().equalsIgnoreCase("hard"))
 				.collect(Collectors.summingInt(Result::getNumberOfQuestions));
 		if(totalQuestionsHard == 0) totalQuestionsHard = 1;
-		totalQuestions = totalQuestionsEasy+totalQuestionsMedium+totalQuestionsHard;
-//		System.out.println("total questions hard = "+totalQuestionsHard);
+		
+//		totalQuestions = totalQuestionsEasy+totalQuestionsMedium+totalQuestionsHard;
+
+		totalQuestions =
+				userResults.stream()
+				
+				.collect(Collectors.summingInt(Result::getNumberOfQuestions));
+		
+		//		System.out.println("total questions hard = "+totalQuestionsHard);
 		k = totalQuestions>100? 1 : (double)totalQuestions/100;
-		double ratingDouble = (k*(  (double) (correctAnswersEasy/ (double)totalQuestionsEasy)*50 
+		
+		//rating with 3 difficulty levels  (apply this or next)
+		double ratingWithDifficulty = (k*(  (double) (correctAnswersEasy/ (double)totalQuestionsEasy)*50 
 				+ (double) (correctAnswersMedium/(double)totalQuestionsMedium)*30
 				+ (double) (correctAnswersHard/(double)totalQuestionsHard)*20 ) );
-		rating = Math.round(ratingDouble);
+		//rating without difficulty
+		double ratingAny = (k*(  (double) correctAnswersTotal/ (double)totalQuestions)*100 ) ;
+//		System.out.println("k="+k);
+		rating = Math.round(ratingAny);
+//		System.out.println("rating="+rating);
 		
 		//--------------------time elapsed---------------
 		timeElapsedEasy =
@@ -125,6 +139,19 @@ public class UserStatistics {
 	
 	}
 	
+	public Long getRating() {
+		return rating;
+	}
 	
+	public List<StatisticElement> getTotal(){
+		List<StatisticElement> output = new ArrayList<>();
+		output.add(new StatisticElement("Correct answers", (int)correctAnswersTotal));
+		output.add(new StatisticElement("Questions", (int)totalQuestions));
+		output.add(new StatisticElement("Time elapsed", (int)timeElapsedTotal));
+		output.add(new StatisticElement("Time per question", (int)timeElapsedPerQuestionTotal));
+		output.add(new StatisticElement("Time per correct answer", (int)timeElapsedPerCorrectAnswerTotal));
+		
+		return output;
+	}
 	
 }

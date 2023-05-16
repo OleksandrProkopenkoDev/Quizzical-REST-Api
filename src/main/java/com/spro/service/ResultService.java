@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.spro.dto.ResponseRatingRecord;
+import com.spro.dto.StatisticElement;
 import com.spro.dto.UserStatistics;
 import com.spro.entity.RatingRecord;
 import com.spro.entity.Result;
@@ -47,13 +48,17 @@ public class ResultService {
 		return resultRepository.findAllByUserId(userId);
 	}
 	
-	public UserStatistics getUserStatistics(Long userId) {
+	public List<StatisticElement> getUserStatistics(Long userId) {
 		List<Result> userResults = resultRepository.findAllByUserId(userId);
-		return new UserStatistics(userResults);
+		UserStatistics userStatistics = new UserStatistics(userResults);
+		
+		return userStatistics.getTotal();
 	}
 	
+
+
+
 	public List<ResponseRatingRecord> ratingList(){
-				
 		//get all rating records
 		List<RatingRecord> ratingList = 
 				ratingRecordRepository.findAll(
@@ -68,21 +73,11 @@ public class ResultService {
 							ratingList.indexOf(ratingRecord)+1, 
 							appUserRepository.findNicknameById(ratingRecord.getUserId()).orElse("no nickname found"), 
 							ratingRecord.getRating())
-					
 					)
 			.collect(Collectors.toList());
-		
 		//object contains position, nickname, rating
 		//elements in list are sortrd by position from 1 to max
-		
-		 
 		return responseList;
-		
-		
-		
-		
-		
-		
 	}
 	
 }

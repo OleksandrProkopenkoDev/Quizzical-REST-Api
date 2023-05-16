@@ -7,6 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.spro.auth.AuthRequest;
+import com.spro.dto.AuthResponse;
+import com.spro.security.AppUser;
 
 import lombok.AllArgsConstructor;
 
@@ -17,14 +19,16 @@ public class AuthService {
 
 	private final AuthenticationManager authenticationManager;
 
-	public String authanticate(AuthRequest requestBody) {
+	public AuthResponse authanticate(AuthRequest requestBody) {
 		Authentication auth = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
 						requestBody.username(),
 						requestBody.password())
-				);
+				);//if auth failed, redirecting to login. Code below is not run
 		SecurityContextHolder.getContext().setAuthentication(auth);
-		return auth.isAuthenticated()? "auth success": "auth failed";
+		AppUser authUser = (AppUser)auth.getPrincipal();
+		
+		return new AuthResponse(authUser.getId(), authUser.getNickname());
 	}
 
 }

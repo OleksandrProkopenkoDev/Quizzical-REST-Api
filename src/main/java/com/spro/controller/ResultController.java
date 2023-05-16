@@ -1,5 +1,8 @@
 package com.spro.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -12,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spro.dto.ResponseRatingRecord;
+import com.spro.dto.StatisticElement;
 import com.spro.dto.UserStatistics;
-import com.spro.entity.RatingRecord;
 import com.spro.entity.Result;
 import com.spro.service.ResultService;
 
@@ -22,7 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = {"*","http://localhost:3000"})
+@CrossOrigin(origins = {"*"})
 public class ResultController {
 
 	private final ResultService resultService;
@@ -34,9 +37,8 @@ public class ResultController {
 	}
 	
 	@GetMapping("results/{userId}")
-	public UserStatistics getUserResults(
+	public List<StatisticElement> getUserResults(
 			@PathVariable("userId")Long userId){
-		
 		return resultService.getUserStatistics(userId);
 	}
 	
