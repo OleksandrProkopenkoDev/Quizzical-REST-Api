@@ -1,0 +1,15 @@
+question controller: 
+	/api/v1/post - POST list of questions. For saving new questions to database using list
+	/api/v1/questions - GET one question, using request params 'amount','difficulty','category';
+	/api/v1/categories - GET list of available in DB categories, for use in frontend dropbox list;
+	
+result controller: 
+	/api/v1/results - POST one quizz result (saves result to db and calculates rating)
+	/api/v1/results/{userId} - GET statistic object for user with 'id'
+	/api/v1/ratingtable - GET list of players with their rating numbers.
+		
+registration controller: 
+	/api/v1/registration - POST one new user object to register new user, saves it to database
+	
+auth controller: 
+	api/v1/auth - POST one authentication request, trying to login user		

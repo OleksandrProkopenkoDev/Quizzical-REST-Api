@@ -30,12 +30,6 @@ public class Question {
 
 	private String[] incorrect_answers;
 	
-//	@OneToMany(
-//			cascade = CascadeType.ALL, 
-//			fetch = FetchType.EAGER)
-//	@JoinColumn(name = "question_id")
-//	private List<IncorrectAnswer> incorrect_answers;
-
 	public Question() {
 	}
 
