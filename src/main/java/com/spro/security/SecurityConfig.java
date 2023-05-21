@@ -2,6 +2,8 @@ package com.spro.security;
 
 import java.util.Arrays;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,14 +24,32 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.spro.jwt.JwtConfig;
+import com.spro.jwt.JwtTokenVerifier;
+import com.spro.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Configuration
 public class SecurityConfig {
 	
+	private final SecretKey secretKey;
+	private final JwtConfig jwtConfig;
+	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
+	SecurityFilterChain securityFilterChain(
+			HttpSecurity http, 
+			AuthenticationProvider authenticationProvider,
+			AuthenticationManager authenticationManager) throws Exception {
         http
         .csrf().disable()
         .cors(Customizer.withDefaults())
+        .sessionManagement()
+        	.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager, jwtConfig,secretKey))
+        .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeHttpRequests()
         .requestMatchers(
                 HttpMethod.GET,
@@ -43,7 +63,8 @@ public class SecurityConfig {
                 HttpMethod.POST,
                 "/api/v1/registration",
 //                "/api/v1/results",
-                "/api/v1/auth"
+                "/api/v1/auth",
+                "/login"
         )
         .permitAll()
         .requestMatchers(
@@ -56,14 +77,12 @@ public class SecurityConfig {
 //        .permitAll()
         .anyRequest()
         .authenticated()
+
         .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .authenticationProvider(authenticationProvider)
+        .authenticationProvider(authenticationProvider);
 //        .formLogin()
 //        .and()
-        .httpBasic();
+//        .httpBasic();
  
 		return http.build();
 	}
