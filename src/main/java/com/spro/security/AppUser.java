@@ -1,5 +1,6 @@
 package com.spro.security;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class AppUser implements UserDetails{
 	/**
 	 * 
 	 */
+	@Serial
 	private transient static final long serialVersionUID = -5851722595836822074L;
 	
 	
