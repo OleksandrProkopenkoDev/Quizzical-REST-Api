@@ -52,10 +52,12 @@ public class SecurityConfig {
         .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeHttpRequests()
         .requestMatchers(
-                HttpMethod.GET,
-//                "/api/v1/ratingtable" ,
-                "/api/v1/auth/login"
-//                ,"/api/v1/results/**"
+				HttpMethod.GET,
+//                		"/api/v1/ratingtable" ,
+				"/api/v1/auth/login",
+						"/api/v1/questions",
+						"/api/v1/categories"
+//                		,"/api/v1/results/**"
                 
         )
         .permitAll()
@@ -63,26 +65,16 @@ public class SecurityConfig {
                 HttpMethod.POST,
                 "/api/v1/registration",
 //                "/api/v1/results",
+                "/api/v1/post",
                 "/api/v1/auth",
                 "/login"
         )
         .permitAll()
-        .requestMatchers(
-                HttpMethod.GET,
-                "/api/v1/questions",
-                "/api/v1/categories"
-        )
-        .permitAll()
-//        .requestMatchers(HttpMethod.GET, "/actuator/**")
-//        .permitAll()
         .anyRequest()
         .authenticated()
-
         .and()
         .authenticationProvider(authenticationProvider);
-//        .formLogin()
-//        .and()
-//        .httpBasic();
+
  
 		return http.build();
 	}
